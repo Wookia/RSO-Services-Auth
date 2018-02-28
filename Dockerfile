@@ -10,7 +10,7 @@ COPY . /usr/src/app
 # Install app dependencies
 RUN npm install
 
-# TODO: Can we use a variable here for this value and the one in index.js?
+# Expose on port
 EXPOSE 8000 
 
 # Start the process
