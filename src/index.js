@@ -16,6 +16,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/auth', (req, res) => {
+    console.log("Auth");
     res.json({
         responseFrom: "auth"
     });
