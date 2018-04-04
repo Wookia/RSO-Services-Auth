@@ -2,13 +2,12 @@
 
 let Promise = require("bluebird");
 let userCommands = require("../domain/userCommands.js");
-//let permissions = require('./permissions.js');
 
 module.exports.createUser = function(req, res, next){
     return userCommands.createUserAsync(req.body).then((user) => {
-        res.status(201).json(user);
+        res.sendStatus(201);
         return Promise.resolve();
-    });
+    }).catch(next);
 };
 
 module.exports.getUsers = function(req, res, next){
@@ -16,9 +15,9 @@ module.exports.getUsers = function(req, res, next){
         return userCommands.getUsersAsync().then((users) => {
             res.json(users);
             return Promise.resolve();
-        });
+        }).catch(next);
     }
-    res.status(403).send();
+    res.sendStatus(403);
     return Promise.resolve();
 };
 
@@ -29,23 +28,23 @@ module.exports.getUser = function(req, res, next){
         return userCommands.getUserAsync(params.id).then((users) => {
             res.json(users);
             return Promise.resolve();
-        });
+        }).catch(next);
     }
-    res.status(403).send();
+    res.sendStatus(403);
     return Promise.resolve();
 };
 
 module.exports.updateUser = function(req, res, next){
     let params = req.params;
     if(params.id != req.user.id && req.user.role != 3){
-        res.status(403).send();
+        res.sendStatus(403);
         return Promise.resolve();
     }
     else if(params.id == req.user.id){
-        req.body.role = req.user.role
+        req.body.role = req.user.role;
     }
     return userCommands.updateUserAsync(params.id, req.body).then((users) => {
         res.json(users);
         return Promise.resolve();
-    });
+    }).catch(next);
 };
