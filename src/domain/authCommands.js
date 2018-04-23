@@ -6,8 +6,8 @@ let database = require('../storage/database.js');
 let bcrypt = require('bcrypt');
 let User = database.models().user;
 
-function generatePrivateKey(){
-	return "-----BEGIN RSA PRIVATE KEY-----\n" + process.env.PRIVATE_KEY + "\n-----END RSA PRIVATE KEY-----";
+function getPrivateKey(){
+	return fs.readFileSync('.dev-keys/private.ppk');
 }
 
 
@@ -20,7 +20,7 @@ module.exports.authenticateAsync = function(username, password){
                         username: user.username,
                         role: user.role,
                         id: user.id
-                    }, generatePrivateKey(), {
+                    }, getPrivateKey(), {
                         algorithm: 'RS256',
                         expiresIn: "10h"
                     }));

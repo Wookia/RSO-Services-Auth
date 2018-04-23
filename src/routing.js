@@ -7,7 +7,8 @@ let jwt = require('express-jwt');
 let authController = require("./controllers/authController.js");
 let userController = require("./controllers/userController.js");
 
-let publicKey =  "-----BEGIN PUBLIC KEY-----\n" + process.env.PUBLIC_KEY + "\n-----END PUBLIC KEY-----";
+let publicKey =  fs.readFileSync('.dev-keys/public.pem');
+
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
