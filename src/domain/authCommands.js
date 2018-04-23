@@ -27,6 +27,6 @@ module.exports.authenticateAsync = function(username, password){
                 }
             });
         }
-        return Promise.reject("Unauthenticated Error");
+        return Promise.reject();
     });
-}
+};

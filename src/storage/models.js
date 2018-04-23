@@ -1,3 +1,5 @@
+"use strict";
+
 const Sequelize = require('sequelize');
 let Promise = require("bluebird");
 
@@ -10,6 +12,7 @@ function initializeUser(sequelize){
         role: Sequelize.INTEGER
     });
 }
+
 module.exports.initializeModel = function(sequelize){
     return new Promise((resolve, reject) => {
         return resolve({
