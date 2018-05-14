@@ -2,12 +2,15 @@
 
 let Promise = require("bluebird");
 let jwt = require('jsonwebtoken');
-let database = require('../storage/database.js');
 let bcrypt = require('bcrypt');
+let fs = require('fs');
+
+let database = require('../storage/database.js');
+
 let User = database.models().user;
 
 function getPrivateKey(){
-	return fs.readFileSync('.dev-keys/private.ppk');
+	return fs.readFileSync('./dev-keys/private.ppk');
 }
 
 

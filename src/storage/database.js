@@ -2,8 +2,10 @@
 
 const Sequelize = require('sequelize');
 let Promise = require("bluebird");
+
 let _sequelize;
 let _models = {};
+
 let models = require("./models.js");
 
 module.exports.models = function(){

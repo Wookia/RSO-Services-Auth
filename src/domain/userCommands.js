@@ -1,10 +1,12 @@
 "use strict";
 
 let Promise = require("bluebird");
-let database = require('../storage/database.js');
 let bcrypt = require('bcrypt');
-let User = database.models().user;
 const uuid = require('uuid/v4');
+
+let database = require('../storage/database.js');
+let errors = require('./errors.js');
+let User = database.models().user;
 
 function mapUser(user){
     return {
@@ -15,7 +17,7 @@ function mapUser(user){
 }
 
 module.exports.createUserAsync = function(userData, sysCall){
-    bcrypt.hash(userData.password, 10).then((hash) => {
+    return bcrypt.hash(userData.password, 10).then((hash) => {
         return User.create({
             username: userData.username,
             password: hash,
@@ -27,6 +29,8 @@ module.exports.createUserAsync = function(userData, sysCall){
                 username: user.username,
                 role: user.role
             });
+        }).catch((error) => {
+            return Promise.reject(new errors.ItemAlreadyExistsError(userData, 'username'));
         });
     });
 };

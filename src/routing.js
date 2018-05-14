@@ -3,11 +3,12 @@
 let router = require("express-promise-router")();
 let bodyParser = require('body-parser');
 let jwt = require('express-jwt');
+let fs = require('fs');
 
 let authController = require("./controllers/authController.js");
 let userController = require("./controllers/userController.js");
 
-let publicKey =  fs.readFileSync('.dev-keys/public.pem');
+let publicKey =  fs.readFileSync('./dev-keys/public.pem');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());

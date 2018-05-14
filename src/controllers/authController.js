@@ -7,7 +7,7 @@ module.exports.authenticate = function(req, res, next){
     return authCommands.authenticateAsync(req.body.username, req.body.password).then((token)=>{
         res.json({token: token});
         return Promise.resolve();
-    }).catch(() =>{
+    }).catch((error) =>{
         res.sendStatus(401);
     });
 };
