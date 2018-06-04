@@ -18,7 +18,7 @@ describe("Authentication Service - Integration Tests / ", function(){
     let baseUrl = "http://localhost:" + port + "/api/";
 
     beforeAll(function(done) {
-        fs.unlink('spec/database.sqlite')
+        fs.unlink('spec/database.sqlite');
         myService = require("../../src/server.js");
         myService.startServer().then(() => {
             done();
@@ -27,6 +27,7 @@ describe("Authentication Service - Integration Tests / ", function(){
     }, 60000);
     
     afterAll(function(done){
+        fs.unlink('spec/database.sqlite');
         myService.stopServer().then(done);
     }, 60000);
    
