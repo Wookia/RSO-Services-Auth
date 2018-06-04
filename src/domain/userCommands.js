@@ -5,7 +5,6 @@ let bcrypt = require('bcrypt');
 const uuid = require('uuid/v4');
 
 let database = require('../storage/database.js');
-let errors = require('./errors.js');
 let User = database.models().user;
 
 function mapUser(user){
@@ -30,7 +29,7 @@ module.exports.createUserAsync = function(userData, sysCall){
                 role: user.role
             });
         }).catch((error) => {
-            return Promise.reject(new errors.ItemAlreadyExistsError(userData, 'username'));
+            return Promise.reject(error);
         });
     });
 };
@@ -62,7 +61,21 @@ module.exports.updateUserAsync = function(userId, userData){
         return Promise.reject("404");
     });
 };
-
+module.exports.updatePasswordAsync = function(userId, userData){
+    return User.findOne({ where: {id: userId} }).then((user) => {
+        if(user){
+            return bcrypt.compare(userData.oldPassword, user.password).then((res) => {
+                return bcrypt.hash(userData.newPassword, 10).then((hash) => {
+                    return user.updateAttributes({
+                        password: hash
+                    }).then(()=>{
+                        return Promise.resolve();
+                    });
+                })
+            });
+        }
+    });
+};
 module.exports.deleteUserAsync = function(userId){
     return User.findById(userId).then((user)=>{
         if(user){

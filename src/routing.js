@@ -13,13 +13,14 @@ let publicKey =  fs.readFileSync('./dev-keys/public.pem');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-router.post('/auth', authController.authenticate);
+router.post('/api/auth', authController.authenticate);
 
-router.get('/user', jwt({secret: publicKey, algorithms: ['RS256']}), userController.getUsers);
-router.get('/user/:id', jwt({secret: publicKey, algorithms: ['RS256']}), userController.getUser);
-router.put('/user/:id', jwt({secret: publicKey, algorithms: ['RS256']}), userController.updateUser);
-//router.delete('/user/:id', jwt({secret: publicKey, algorithms: ['RS256']}), userController.deleteUser);
+router.get('/api/user', jwt({secret: publicKey, algorithms: ['RS256']}), userController.getUsers);
+router.get('/api/user/:id', jwt({secret: publicKey, algorithms: ['RS256']}), userController.getUser);
+router.put('/api/user/:id', jwt({secret: publicKey, algorithms: ['RS256']}), userController.updateUser);
+router.put('/api/user/:id/password', jwt({secret: publicKey, algorithms: ['RS256']}), userController.updateUserPassword);
+router.delete('/api/user/:id', jwt({secret: publicKey, algorithms: ['RS256']}), userController.deleteUser);
 
-router.post('/user', userController.createUser);
+router.post('/api/user', userController.createUser);
 
 module.exports = router;

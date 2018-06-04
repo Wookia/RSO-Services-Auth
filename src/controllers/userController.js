@@ -5,8 +5,7 @@ let userCommands = require("../domain/userCommands.js");
 
 module.exports.createUser = function(req, res, next){
     return userCommands.createUserAsync(req.body).then((user) => {
-        console.log("createUser");
-        res.sendStatus(201);
+        res.json(user);
         return Promise.resolve();
     }).catch(next);
 };
@@ -49,6 +48,32 @@ module.exports.updateUser = function(req, res, next){
     console.log("updateUser");
     return userCommands.updateUserAsync(params.id, req.body).then((users) => {
         res.json(users);
+        return Promise.resolve();
+    }).catch(next);
+};
+
+module.exports.updateUserPassword = function(req, res, next){
+    let params = req.params;
+    if(params.id != req.user.id){
+        res.sendStatus(403);
+        return Promise.resolve();
+    }
+    console.log("updatePassword");
+    return userCommands.updatePasswordAsync(params.id, req.body).then(() => {
+        res.sendStatus(200);
+        return Promise.resolve();
+    }).catch(next);
+};
+
+module.exports.deleteUser = function(req, res, next){
+    let params = req.params;
+    if(req.user.role != 3){
+        res.sendStatus(403);
+        return Promise.resolve();
+    }
+    console.log("updatePassword");
+    return userCommands.deleteUserAsync(params.id).then(() => {
+        res.sendStatus(200);
         return Promise.resolve();
     }).catch(next);
 };

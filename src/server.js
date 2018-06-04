@@ -26,29 +26,33 @@ exports.startServer = function(){
             }
         });
     }).then(()=>{
-        routing = require('./routing.js');
-        console.log('Database connection initialized');
-        app.use(function (req, res, next) {
+        return new Promise((resolve, reject) => {
+            routing = require('./routing.js');
+            console.log('Database connection initialized');
+            app.use(function (req, res, next) {
+            
+                res.setHeader('Access-Control-Allow-Origin', '*');
+            
+                res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+            
+                res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+            
+                res.setHeader('Access-Control-Allow-Credentials', true);
+            
+                next();
+            });
+            
+            app.use("", routing);
         
-            res.setHeader('Access-Control-Allow-Origin', '*');
-        
-            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-        
-            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
-        
-            res.setHeader('Access-Control-Allow-Credentials', true);
-        
-            next();
+            self._server = app.listen(process.env.PORT || 3000, () => {
+                console.log('App listening on port: ' + (process.env.PORT || 3000));
+                resolve();
+            });
         });
         
-        app.use("", routing);
-    
-        self._server = app.listen(process.env.PORT || 3000, () => {
-            console.log('App listening on port: ' + (process.env.PORT || 3000))
-        });
     });
 };
 
 exports.stopServer = function(){
-    this._server.close();
+    return Promise.resolve(this._server.close());
 };
