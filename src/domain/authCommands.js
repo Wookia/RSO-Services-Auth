@@ -28,6 +28,7 @@ module.exports.authenticateAsync = function(username, password){
                         expiresIn: "10h"
                     }));
                 }
+                return Promise.reject();
             });
         }
         return Promise.reject();

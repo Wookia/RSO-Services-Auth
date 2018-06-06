@@ -74,6 +74,7 @@ module.exports.updatePasswordAsync = function(userId, userData){
                 })
             });
         }
+        return Promise.reject("404");
     });
 };
 module.exports.deleteUserAsync = function(userId){
