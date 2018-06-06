@@ -27,8 +27,10 @@ describe("Authentication Service - Integration Tests / ", function(){
     }, 60000);
     
     afterAll(function(done){
-        fs.unlink('spec/database.sqlite');
-        myService.stopServer().then(done);
+        myService.stopServer().then(() => {
+            fs.unlink('spec/database.sqlite');
+            done();
+        });
     }, 60000);
    
     describe("POST /", function(){
