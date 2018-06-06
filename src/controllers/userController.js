@@ -7,7 +7,9 @@ module.exports.createUser = function(req, res, next){
     return userCommands.createUserAsync(req.body).then((user) => {
         res.json(user);
         return Promise.resolve();
-    }).catch(next);
+    }).catch((error) => {
+        res.sendStatus(409);
+    });
 };
 
 module.exports.getUsers = function(req, res, next){
@@ -49,7 +51,9 @@ module.exports.updateUser = function(req, res, next){
     return userCommands.updateUserAsync(params.id, req.body).then((users) => {
         res.json(users);
         return Promise.resolve();
-    }).catch(next);
+    }).catch((error) => {
+        res.sendStatus(error);
+    });
 };
 
 module.exports.updateUserPassword = function(req, res, next){
@@ -62,7 +66,9 @@ module.exports.updateUserPassword = function(req, res, next){
     return userCommands.updatePasswordAsync(params.id, req.body).then(() => {
         res.sendStatus(200);
         return Promise.resolve();
-    }).catch(next);
+    }).catch((error) => {
+        res.sendStatus(error);
+    });
 };
 
 module.exports.deleteUser = function(req, res, next){
@@ -75,5 +81,7 @@ module.exports.deleteUser = function(req, res, next){
     return userCommands.deleteUserAsync(params.id).then(() => {
         res.sendStatus(200);
         return Promise.resolve();
-    }).catch(next);
+    }).catch((error) => {
+        res.sendStatus(error);
+    });
 };
